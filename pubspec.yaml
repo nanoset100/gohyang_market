@@ -1,0 +1,67 @@
+name: gohyang_market
+description: 고향마켓 - 농어민 AI 직거래 플랫폼
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Firebase
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.5
+  firebase_storage: ^12.3.3
+  firebase_messaging: ^15.1.6
+
+  # UI
+  cached_network_image: ^3.3.0
+  cupertino_icons: ^1.0.8
+
+  # 카메라 & 이미지
+  image_picker: ^1.0.7
+  image_cropper: ^8.0.2
+
+  # AI (OpenAI Vision API)
+  http: ^1.1.0
+  flutter_dotenv: ^5.1.0
+
+  # 유틸리티
+  intl: ^0.18.1
+  shared_preferences: ^2.2.2
+  url_launcher: ^6.2.5
+  share_plus: ^10.0.0
+
+  # 상태관리
+  provider: ^6.1.1
+
+  # 인앱 업데이트
+  in_app_update: ^4.2.3
+  package_info_plus: ^8.0.0
+
+  # 앱 아이콘
+  flutter_launcher_icons: ^0.14.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  adaptive_icon_background: "#2E7D32"
+  adaptive_icon_foreground: "assets/icon/app_icon_foreground.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/icon/
+    - .env

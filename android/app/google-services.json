@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "961204948552",
+    "project_id": "gohyang-market",
+    "storage_bucket": "gohyang-market.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961204948552:android:82dc6e3386291370e0527d",
+        "android_client_info": {
+          "package_name": "com.nanoset.gohyang_market"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmW5IsEfSAgGEnZwLUc2Ay_IjBetjJSgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
