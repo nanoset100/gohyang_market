@@ -231,7 +231,7 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                   ),
 
-                  // === 온톨로지 태그 섹션 ===
+                  // === AI 상품 메타데이터 섹션 ===
 
                   // 제철 정보
                   if (product.season.isNotEmpty) ...[

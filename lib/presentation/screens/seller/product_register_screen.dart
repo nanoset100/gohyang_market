@@ -36,7 +36,7 @@ class _ProductRegisterScreenState extends State<ProductRegisterScreen> {
   bool _aiCompleted = false;
   String? _regionCode;
   String? _regionName;
-  Map<String, dynamic>? _ontologyTags;
+  Map<String, dynamic>? _aiMetadata;
 
   @override
   void initState() {
@@ -102,8 +102,8 @@ class _ProductRegisterScreenState extends State<ProductRegisterScreen> {
           _storyController.text = result['story'] ?? '';
           _aiCompleted = true;
 
-          // 온톨로지 태그 저장
-          _ontologyTags = {
+          // AI 상품 메타데이터 저장
+          _aiMetadata = {
             'season': result['season'] ?? [],
             'bestMonths': result['bestMonths'] ?? [],
             'pairsWith': result['pairsWith'] ?? [],
@@ -166,7 +166,7 @@ class _ProductRegisterScreenState extends State<ProductRegisterScreen> {
         aiDescription: _descController.text.trim(),
         sellerStory: _storyController.text.trim(),
         phoneNumber: _phoneController.text.trim(),
-        ontologyTags: _ontologyTags,
+        aiMetadata: _aiMetadata,
       );
 
       if (mounted) {

@@ -21,7 +21,7 @@ class ProductService {
     String? aiDescription,
     String? sellerStory,
     String? phoneNumber,
-    Map<String, dynamic>? ontologyTags,
+    Map<String, dynamic>? aiMetadata,
   }) async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) throw Exception('로그인이 필요합니다');
@@ -59,15 +59,15 @@ class ProductService {
       'isAvailable': true,
       'createdAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
-      // 온톨로지 태그 (AI 자동 생성)
-      'season': ontologyTags?['season'] ?? [],
-      'bestMonths': ontologyTags?['bestMonths'] ?? [],
-      'pairsWith': ontologyTags?['pairsWith'] ?? [],
-      'recipes': ontologyTags?['recipes'] ?? [],
-      'nutrition': ontologyTags?['nutrition'] ?? [],
-      'healthBenefits': ontologyTags?['healthBenefits'] ?? [],
-      'storage': ontologyTags?['storage'],
-      'keywords': ontologyTags?['keywords'] ?? [],
+      // AI 상품 메타데이터 (자동 생성)
+      'season': aiMetadata?['season'] ?? [],
+      'bestMonths': aiMetadata?['bestMonths'] ?? [],
+      'pairsWith': aiMetadata?['pairsWith'] ?? [],
+      'recipes': aiMetadata?['recipes'] ?? [],
+      'nutrition': aiMetadata?['nutrition'] ?? [],
+      'healthBenefits': aiMetadata?['healthBenefits'] ?? [],
+      'storage': aiMetadata?['storage'],
+      'keywords': aiMetadata?['keywords'] ?? [],
     });
 
     return docRef.id;

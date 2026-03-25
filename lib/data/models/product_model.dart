@@ -19,7 +19,7 @@ class ProductModel {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  // 온톨로지 태그 (AI 자동 생성)
+  // AI 상품 메타데이터 (자동 생성)
   final List<String> season;        // 제철 계절
   final List<int> bestMonths;       // 제철 월
   final List<String> pairsWith;     // 궁합 식품
