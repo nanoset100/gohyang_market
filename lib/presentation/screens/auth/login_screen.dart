@@ -86,207 +86,247 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            children: [
-              const SizedBox(height: 40),
-              // 로고 & 타이틀
-              Icon(Icons.storefront, size: 80, color: AppColors.primary),
-              const SizedBox(height: 16),
-              Text(
-                AppConfig.appName,
-                style: const TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.primary,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                AppConfig.appDescription,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-              const SizedBox(height: 40),
-
-              // 로그인/회원가입 탭
-              Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => setState(() => _isLogin = true),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: _isLogin
-                                  ? AppColors.primary
-                                  : Colors.grey[300]!,
-                              width: 2,
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          '로그인',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: _isLogin
-                                ? AppColors.primary
-                                : AppColors.textHint,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => setState(() => _isLogin = false),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: !_isLogin
-                                  ? AppColors.primary
-                                  : Colors.grey[300]!,
-                              width: 2,
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          '회원가입',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: !_isLogin
-                                ? AppColors.primary
-                                : AppColors.textHint,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-
-              // 이메일
-              TextField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: '이메일',
-                  prefixIcon: Icon(Icons.email_outlined),
-                ),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(height: 16),
-
-              // 비밀번호
-              TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: '비밀번호',
-                  prefixIcon: Icon(Icons.lock_outlined),
-                ),
-                obscureText: true,
-              ),
-
-              // 회원가입 추가 필드
-              if (!_isLogin) ...[
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: '이름',
-                    prefixIcon: Icon(Icons.person_outlined),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _phoneController,
-                  decoration: const InputDecoration(
-                    labelText: '전화번호',
-                    prefixIcon: Icon(Icons.phone_outlined),
-                  ),
-                  keyboardType: TextInputType.phone,
-                ),
-                const SizedBox(height: 16),
-
-                // 지역 선택
-                DropdownButtonFormField<String>(
-                  value: _selectedRegion,
-                  decoration: const InputDecoration(
-                    labelText: '우리 고향 (지역)',
-                    prefixIcon: Icon(Icons.location_on_outlined),
-                  ),
-                  items: AppConfig.pilotRegions
-                      .map((r) => DropdownMenuItem(
-                            value: r['code'],
-                            child: Text(
-                                '${r['province']} ${r['name']}'),
-                          ))
-                      .toList(),
-                  onChanged: (v) {
-                    final region = AppConfig.pilotRegions
-                        .firstWhere((r) => r['code'] == v);
-                    setState(() {
-                      _selectedRegion = v!;
-                      _selectedRegionName = region['name']!;
-                    });
-                  },
-                ),
-                const SizedBox(height: 16),
-
-                // 사용자 유형
-                DropdownButtonFormField<String>(
-                  value: _userType,
-                  decoration: const InputDecoration(
-                    labelText: '사용 목적',
-                    prefixIcon: Icon(Icons.category_outlined),
-                  ),
-                  items: const [
-                    DropdownMenuItem(
-                        value: 'seller', child: Text('판매자 (농어민)')),
-                    DropdownMenuItem(
-                        value: 'buyer', child: Text('구매자')),
-                    DropdownMenuItem(
-                        value: 'both', child: Text('판매 + 구매 모두')),
-                  ],
-                  onChanged: (v) => setState(() => _userType = v!),
-                ),
-              ],
-
-              const SizedBox(height: 32),
-
-              // 로그인/가입 버튼
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _submit,
-                  child: _isLoading
-                      ? const SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : Text(_isLogin ? '로그인' : '가입하기'),
-                ),
-              ),
-              const SizedBox(height: 40),
+      body: Container(
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.white,
+              AppColors.primary.withValues(alpha: 0.05),
+              AppColors.primaryLight.withValues(alpha: 0.1),
             ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
+            child: Column(
+              children: [
+                const SizedBox(height: 60),
+                // 로고 및 브랜드 섹션
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: AppColors.premiumShadow,
+                  ),
+                  child: const Icon(Icons.eco_rounded, size: 64, color: AppColors.primary),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  AppConfig.appName,
+                  style: const TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.primary,
+                    letterSpacing: -1.0,
+                  ),
+                ),
+                Text(
+                  AppConfig.appDescription,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 48),
+
+                // 로그인/회원가입 전환 제어기
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(AppColors.radiusM),
+                  ),
+                  child: Row(
+                    children: [
+                      _buildTabButton('로그인', _isLogin, () => setState(() => _isLogin = true)),
+                      _buildTabButton('회원가입', !_isLogin, () => setState(() => _isLogin = false)),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                // 입력 폼 섹션
+                AnimatedSize(
+                  duration: const Duration(milliseconds: 300),
+                  child: Column(
+                    children: [
+                      _buildTextField(_emailController, '이메일', Icons.mail_outline_rounded),
+                      const SizedBox(height: 16),
+                      _buildTextField(_passwordController, '비밀번호', Icons.lock_outline_rounded, isObscure: true),
+                      
+                      if (!_isLogin) ...[
+                        const SizedBox(height: 16),
+                        _buildTextField(_nameController, '이름', Icons.person_outline_rounded),
+                        const SizedBox(height: 16),
+                        _buildTextField(_phoneController, '전화번호', Icons.phone_android_rounded, type: TextInputType.phone),
+                        const SizedBox(height: 16),
+                        _buildDropdownField(
+                          value: _selectedRegion,
+                          label: '활동 지역',
+                          icon: Icons.location_on_outlined,
+                          items: AppConfig.pilotRegions.map((r) => 
+                            DropdownMenuItem(value: r['code'], child: Text('${r['province']} ${r['name']}'))
+                          ).toList(),
+                          onChanged: (v) {
+                            final region = AppConfig.pilotRegions.firstWhere((r) => r['code'] == v);
+                            setState(() {
+                              _selectedRegion = v!;
+                              _selectedRegionName = region['name']!;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        _buildDropdownField(
+                          value: _userType,
+                          label: '가입 목적',
+                          icon: Icons.assignment_ind_outlined,
+                          items: const [
+                            DropdownMenuItem(value: 'seller', child: Text('판매자 (농어민)')),
+                            DropdownMenuItem(value: 'buyer', child: Text('구매자')),
+                            DropdownMenuItem(value: 'both', child: Text('판매 + 구매 모두')),
+                          ],
+                          onChanged: (v) => setState(() => _userType = v!),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                // 메인 액션 버튼
+                Container(
+                  width: double.infinity,
+                  height: 58,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(colors: AppColors.primaryGradient),
+                    borderRadius: BorderRadius.circular(AppColors.radiusM),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withValues(alpha: 0.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _submit,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppColors.radiusM)),
+                    ),
+                    child: _isLoading
+                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                        : Text(_isLogin ? '로그인' : '회원가입 시작하기', style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w900)),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                
+                TextButton(
+                  onPressed: () {}, // 비밀번호 찾기 등 추가 가능
+                  child: Text(
+                    _isLogin ? '계정 정보를 잊으셨나요?' : '이미 계정이 있으신가요?',
+                    style: TextStyle(color: AppColors.textHint, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                const SizedBox(height: 40),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabButton(String title, bool isSelected, VoidCallback onTap) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: isSelected ? Colors.white : Colors.transparent,
+            borderRadius: BorderRadius.circular(AppColors.radiusM - 4),
+            boxShadow: isSelected ? AppColors.premiumShadow : null,
+          ),
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w800,
+              color: isSelected ? AppColors.primary : AppColors.textHint,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label, IconData icon, {bool isObscure = false, TextInputType type = TextInputType.text}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(AppColors.radiusM),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        obscureText: isObscure,
+        keyboardType: type,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(color: AppColors.textHint, fontWeight: FontWeight.w500),
+          prefixIcon: Icon(icon, color: AppColors.primaryLight, size: 22),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppColors.radiusM), borderSide: BorderSide.none),
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdownField({required String value, required String label, required IconData icon, required List<DropdownMenuItem<String>> items, required Function(String?) onChanged}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(AppColors.radiusM),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: DropdownButtonFormField<String>(
+        value: value,
+        items: items,
+        onChanged: onChanged,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(color: AppColors.textHint, fontWeight: FontWeight.w500),
+          prefixIcon: Icon(icon, color: AppColors.primaryLight, size: 22),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppColors.radiusM), borderSide: BorderSide.none),
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
       ),
     );

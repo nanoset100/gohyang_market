@@ -7,10 +7,17 @@ import 'core/config/app_config.dart';
 import 'presentation/screens/auth/login_screen.dart';
 import 'presentation/screens/home/home_screen.dart';
 
+import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
   await dotenv.load(fileName: '.env');
+  
   runApp(const GohyangMarketApp());
 }
 

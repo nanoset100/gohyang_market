@@ -63,15 +63,19 @@ class ProductDetailScreen extends StatelessWidget {
                   ]
                 : null,
             flexibleSpace: FlexibleSpaceBar(
-              background: product.imageUrls.isNotEmpty
-                  ? Image.network(
-                      product.imageUrls[0],
-                      fit: BoxFit.cover,
-                    )
-                  : Container(
-                      color: Colors.grey[200],
-                      child: const Icon(Icons.image, size: 80),
-                    ),
+              background: Hero(
+                tag: 'product_image_${product.id}',
+                child: product.imageUrls.isNotEmpty
+                    ? Image.network(
+                        product.imageUrls[0],
+                        fit: BoxFit.cover,
+                      )
+                    : Container(
+                        color: Colors.grey[100],
+                        child: Icon(Icons.eco_rounded,
+                            size: 80, color: AppColors.primary.withValues(alpha: 0.1)),
+                      ),
+              ),
             ),
           ),
 
@@ -121,28 +125,37 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
 
-                  // 판매자 정보
+                  // 판매자 정보 (프리미엄 카드)
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(AppColors.radiusM),
+                      boxShadow: AppColors.premiumShadow,
                     ),
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          backgroundColor: AppColors.primary,
-                          child: Text(
-                            product.sellerName.isNotEmpty
-                                ? product.sellerName[0]
-                                : '?',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
+                        Container(
+                          width: 54,
+                          height: 54,
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(colors: AppColors.primaryGradient),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              product.sellerName.isNotEmpty
+                                  ? product.sellerName[0]
+                                  : '?',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 16),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,16 +163,25 @@ class ProductDetailScreen extends StatelessWidget {
                               Text(
                                 product.sellerName,
                                 style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.textPrimary,
                                 ),
                               ),
-                              Text(
-                                '${product.regionName} 판매자',
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  color: AppColors.textSecondary,
-                                ),
+                              const SizedBox(height: 2),
+                              Row(
+                                children: [
+                                  const Icon(Icons.location_on_rounded, size: 14, color: AppColors.primary),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '${product.regionName} 명예 농어민',
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -181,36 +203,42 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
 
-                  // 한줄 이야기
+                  // 한줄 이야기 (따옴표 디자인)
                   if (product.sellerStory != null &&
                       product.sellerStory!.isNotEmpty) ...[
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: AppColors.accentLight.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.accent.withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          const Text('💬', style: TextStyle(fontSize: 24)),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              product.sellerStory!,
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontStyle: FontStyle.italic,
-                                color: AppColors.textPrimary,
-                              ),
+                    Stack(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
+                          decoration: BoxDecoration(
+                            color: AppColors.accent.withValues(alpha: 0.05),
+                            borderRadius: BorderRadius.circular(AppColors.radiusM),
+                            border: Border.all(color: AppColors.accent.withValues(alpha: 0.1), width: 1.5),
+                          ),
+                          child: Text(
+                            product.sellerStory!,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              height: 1.6,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.italic,
+                              color: AppColors.textPrimary,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        Positioned(
+                          top: 0, left: 20,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            color: AppColors.background, // Or use specific BG color
+                            child: const Icon(Icons.format_quote_rounded, color: AppColors.accent, size: 28),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 32),
                   ],
 
                   // 상품 설명
@@ -401,9 +429,27 @@ class ProductDetailScreen extends StatelessWidget {
                 const SizedBox(width: 12),
               // 주문하기
               Expanded(
-                child: ElevatedButton(
-                  onPressed: () => _showOrderSheet(context),
-                  child: const Text('주문하기'),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(colors: AppColors.primaryGradient),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withValues(alpha: 0.3),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () => _showOrderSheet(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text('지금 바로 주문하기', style: TextStyle(fontWeight: FontWeight.w900)),
+                  ),
                 ),
               ),
             ],

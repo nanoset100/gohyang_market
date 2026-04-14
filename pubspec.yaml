@@ -1,7 +1,7 @@
 name: gohyang_market
 description: 고향마켓 - 농어민 AI 직거래 플랫폼
 publish_to: 'none'
-version: 1.0.1+2
+version: 1.0.3+4
 
 environment:
   sdk: ^3.8.1
